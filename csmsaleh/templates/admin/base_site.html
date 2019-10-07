@@ -1,9 +1,14 @@
-{% extends "admin/base.html" %}
+{% extends "admin/base_site.html" %}
 
 {% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
-{% block branding %}
+{% block content %}
+{% if user.is_authenticated %}
 <h1 id="site-name"><a href="{% url 'admin:index' %}">Evaluation Administration</a></h1>
+<p><a href="{% url 'logout' %}">logout</a></p> <!-- logoff buttton assigned -->
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> <!-- logoff page -->
+{% endif %}
 {% endblock %}
-
 {% block nav-global %}{% endblock %}
