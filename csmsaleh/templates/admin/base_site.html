@@ -1,10 +1,10 @@
 {% extends "admin/base_site.html" %}
 
-{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block title %}{{ title }} | {{ site_title|default:_('Peer Evaluator Login') }}{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">Evaluation Administration</a></h1>
+<h1 id="site-name"><a href="{% url 'evaluation:index' %}">Take Evaluations</a></h1>
 <p><a href="{% url 'logout' %}">logout</a></p> <!-- logoff buttton assigned -->
 {% else %}
   <p>You are not logged in</p>
