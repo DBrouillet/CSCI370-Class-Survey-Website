@@ -5,29 +5,29 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 
-from .models import Choice, Question
+from .models import Evaluation, Choice, Question
 
 class IndexView(generic.ListView):
     template_name = 'evaluation/index.html'
-    context_object_name = 'latest_question_list'
+    context_object_name = 'latest_evaluation_list'
 
     def get_queryset(self):
         """
         Return the last five published questions (not including those set to be
         published in the future).
         """
-        return Question.objects.filter(
+        return Evaluation.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
 
 
 class DetailView(generic.DetailView):
-    model = Question
+    model = Evaluation
     template_name = 'evaluation/detail.html'
 
 
 class ResultsView(generic.DetailView):
-    model = Question
+    model = Evaluation
     template_name = 'evaluation/results.html'
 
 def vote(request, question_id):

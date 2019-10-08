@@ -1,6 +1,5 @@
 {% load static %}
 
-site_title = "Peer Evaluator"
 
 <link rel="stylesheet" type="text/css" href="{% static 'evaluation/style.css' %}">
 
@@ -12,5 +11,5 @@ site_title = "Peer Evaluator"
     {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p style="text-align:center; ">No evaluations are available.</p>
 {% endif %}
