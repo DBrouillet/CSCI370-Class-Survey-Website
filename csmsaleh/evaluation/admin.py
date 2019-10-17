@@ -13,7 +13,7 @@ class QuestionInline(admin.TabularInline):
 class EvaluationAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['eval_text']}),
-        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+        ('Date information', {'fields': ['pub_date']}),
     ]
     inlines = [QuestionInline]
     list_display = ('eval_text', 'pub_date', 'was_published_recently')
