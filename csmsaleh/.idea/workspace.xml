@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea8de9a1-4a6b-413d-a22b-eb8b1705d012" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/templates/evaluation/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/templates/evaluation/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/templates/evaluation/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/templates/evaluation/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/csmsaleh/auth_backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/csmsaleh/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/csmsaleh/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/base_site.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/base_site.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/registration/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/registration/login.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

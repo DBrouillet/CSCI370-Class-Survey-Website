@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth import login
 
 from .models import Evaluation, Question, Choice
 
@@ -24,6 +25,7 @@ class QuestionAdmin(admin.ModelAdmin):
         (None, {'fields': ['question_text']}),
     ]
     inlines = [ChoiceInline]
+
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Evaluation, EvaluationAdmin)
