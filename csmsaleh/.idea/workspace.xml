@@ -4,8 +4,9 @@
     <list default="true" id="ea8de9a1-4a6b-413d-a22b-eb8b1705d012" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/templates/evaluation/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/templates/evaluation/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/templates/evaluation/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/templates/evaluation/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

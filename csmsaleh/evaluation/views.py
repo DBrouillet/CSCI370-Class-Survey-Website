@@ -30,6 +30,7 @@ class ResultsView(generic.DetailView):
     model = Evaluation
     template_name = 'evaluation/results.html'
 
+#TODO: change this vote method to handle evaluations instead of polls
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
