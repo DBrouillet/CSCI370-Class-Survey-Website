@@ -3,6 +3,7 @@
 {% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block content %}
+<header><img src="https://idp.mines.edu/idp/images/Mineslogo.png" alt="Colorado School of Mines"><header>
 {% if user.is_authenticated %}
 <h1 id="site-name"><a href="{% url 'admin:index' %}">Evaluation Administration</a></h1>
 <p><a href="{% url 'logout' %}">logout</a></p> <!-- logoff buttton assigned -->
