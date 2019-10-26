@@ -30,6 +30,7 @@ class ResultsView(generic.DetailView):
     model = Evaluation
     template_name = 'evaluation/results.html'
 
+<<<<<<< HEAD
 #TODO: change this vote method to handle evaluations instead of polls
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -48,3 +49,22 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('evaluation:results', args=(question.id,)))
+=======
+def submitAnswers(request, evaluation_id):
+    evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+    choices = []
+    for choice in evaluation.question_set.all():
+        try:
+            choices.append(choice.get(pk=request.POST['choice']))
+        except:
+            return render(request, 'evaluation/detail.html', {
+                    'evaluation': evaluation,
+                    'error_message': "You did not answer one of the required questions.",
+                })
+    # for answer in choices:
+    #    .save()
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
+    return HttpResponseRedirect(reverse('evaluation:results', args=(evaluation.id,)))
+>>>>>>> 191c4b43ed010aede7691b5db0ccdb792950b079
