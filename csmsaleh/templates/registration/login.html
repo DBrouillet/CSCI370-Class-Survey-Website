@@ -6,16 +6,9 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<<<<<<< HEAD
 <header><img src="https://idp.mines.edu/idp/images/Mineslogo.png" alt="Colorado School of Mines"><header>
 <h2>Login</h2>
 <form method="post">
-=======
-
-
-<h2 style="text-align:center; font-size: 48px;" >Student Login</h2>
-<form method="post" style="text-align:center;">
->>>>>>> e940865a318b73893f2850fde6e024a5217b92f4
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Login</button>

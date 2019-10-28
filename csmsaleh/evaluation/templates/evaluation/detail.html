@@ -2,15 +2,7 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<<<<<<< HEAD
-<form action="{% url 'evaluation:vote' evaluation.id %}" method="post">
-{% csrf_token %}
-<!--TODO: Fix this to display multiple questions-->
-{% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-{% endfor %}
-=======
+
 <form action="{% url 'evaluation:submit' evaluation.id %}" method="post">
 {% csrf_token %}
     {% for question in evaluation.question_set.all %}
@@ -21,6 +13,5 @@
             <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
         {% endfor %}
     {% endfor %}
->>>>>>> 191c4b43ed010aede7691b5db0ccdb792950b079
 <input type="submit" value="Submit">
 </form>

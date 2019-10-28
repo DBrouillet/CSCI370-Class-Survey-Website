@@ -100,11 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-#userwithout password backend
-
-AUTHENTICATION_BACKENDS = (
-    'csmsaleh.auth_backend.PasswordlessAuthBackend',
-)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
