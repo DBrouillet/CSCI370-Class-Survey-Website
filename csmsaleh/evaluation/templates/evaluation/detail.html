@@ -5,13 +5,14 @@
 
 <form action="{% url 'evaluation:submit' evaluation.id %}" method="post">
 {% csrf_token %}
-    {% for question in evaluation.question_set.all %}
-<!--        This looks like an error in the pycharm IDE, but functions correctly when compiled-->
-         <label for="question{{ forloop.counter }}">{{ question.question_text }}</label><br>
-        {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-    {% endfor %}
+<!--    {% for question in evaluation.question_set.all %}-->
+<!--&lt;!&ndash;        This looks like an error in the pycharm IDE, but functions correctly when compiled&ndash;&gt;-->
+<!--         <label for="question{{ forloop.counter }}">{{ question.question_text }}</label><br>-->
+<!--        {% for choice in question.choice_set.all %}-->
+<!--            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">-->
+<!--            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>-->
+<!--        {% endfor %}-->
+<!--    {% endfor %}-->
+    {{ form.as_p }}
 <input type="submit" value="Submit">
 </form>

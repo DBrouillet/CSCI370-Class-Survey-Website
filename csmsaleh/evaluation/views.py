@@ -7,6 +7,8 @@ from django.utils import timezone
 
 from .models import Evaluation, Choice, Question
 
+from .forms import QuestionForm
+
 class IndexView(generic.ListView):
     template_name = 'evaluation/index.html'
     context_object_name = 'latest_evaluation_list'
@@ -21,9 +23,22 @@ class IndexView(generic.ListView):
         ).order_by('-pub_date')[:5]
 
 
-class DetailView(generic.DetailView):
-    model = Evaluation
-    template_name = 'evaluation/detail.html'
+# class DetailView(generic.DetailView):
+#     model = Evaluation
+#     template_name = 'evaluation/detail.html'
+
+
+#Create the detail page for each evaluation from the forms
+def createDetails(request, evaluation_id):
+    evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            chosen = form.cleaned_data.get('chosen')
+    else:
+        form = QuestionForm()
+
+    return render(request, 'evaluation/detail.html', {'evaluation': evaluation, 'form':form})
 
 
 class ResultsView(generic.DetailView):
