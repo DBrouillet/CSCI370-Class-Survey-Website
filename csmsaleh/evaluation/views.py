@@ -7,7 +7,6 @@ from django.utils import timezone
 
 from .models import Evaluation, Choice, Question
 
-from .forms import QuestionForm
 
 class IndexView(generic.ListView):
     template_name = 'evaluation/index.html'
