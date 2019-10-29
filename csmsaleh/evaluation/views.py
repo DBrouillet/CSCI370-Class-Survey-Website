@@ -11,7 +11,7 @@ from .models import Evaluation, Choice, Question
 class IndexView(generic.ListView):
     template_name = 'evaluation/index.html'
     context_object_name = 'latest_evaluation_list'
-
+    # TODO: fix the following method to display for five days from publish date instead of the most recent five surveys
     def get_queryset(self):
         """
         Return the last five published questions (not including those set to be
@@ -35,14 +35,17 @@ class ResultsView(generic.DetailView):
 def submitAnswers(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
     choices = []
-    for choice in evaluation.question_set.all():
-        try:
-            choices.append(choice.get(pk=request.POST['choice']))
-        except:
-            return render(request, 'evaluation/detail.html', {
-                    'evaluation': evaluation,
-                    'error_message': "You did not answer one of the required questions.",
-                })
+    #these lines work for a single response, but not all. Needs to iterate with the for loop
+    for c in evaluation.question_set.all():
+        answer = request.POST['choice1']
+        choices.append(answer)
+            # try:
+            #     choices.append(self.request.get('choice{{c}}'))
+            # except:
+            #     return render(request, 'evaluation/detail.html', {
+            #             'evaluation': evaluation,
+            #             'error_message': "You did not answer one of the required questions.",
+            #         })
     # for answer in choices:
     #    .save()
     # Always return an HttpResponseRedirect after successfully dealing
