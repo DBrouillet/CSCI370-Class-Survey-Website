@@ -35,10 +35,15 @@ class ResultsView(generic.DetailView):
 def submitAnswers(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
     choices = []
+    i = 0
     #these lines work for a single response, but not all. Needs to iterate with the for loop
     for c in evaluation.question_set.all():
         try:
-            answer = request.POST['choice1']
+            # using i and questNum as temp variables to iterate through user selections
+            i = i + 1
+            quest_num = "choice" + str(i)
+            print (quest_num)
+            answer = request.POST[quest_num]
             choices.append(answer)
         except:
             return render(request, 'evaluation/detail.html', {
