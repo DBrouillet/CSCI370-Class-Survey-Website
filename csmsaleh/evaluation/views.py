@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 
-from .models import Evaluation, Choice, Question
+from .models import Evaluation, Choice, Question, UserAnswers
 
 
 class IndexView(generic.ListView):
@@ -36,15 +36,18 @@ def submitAnswers(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
     choices = []
     i = 0
-    #these lines work for a single response, but not all. Needs to iterate with the for loop
+    #iterates through all questions to see if they were answered
+    # currently, data returned by the POST is numerical, not very useful
     for c in evaluation.question_set.all():
         try:
             # using i and questNum as temp variables to iterate through user selections
             i = i + 1
             quest_num = "choice" + str(i)
-            print (quest_num)
-            answer = request.POST[quest_num]
-            choices.append(answer)
+            data = request.POST.copy()
+            answer = data.get(quest_num)
+            final_choice = Choice.objects.get(id = answer) #taking the cleaned POST data and retrieving the corresponding choice to save
+            choices.append(final_choice)
+
         except:
             return render(request, 'evaluation/detail.html', {
                         'evaluation': evaluation,
@@ -52,8 +55,10 @@ def submitAnswers(request, evaluation_id):
                     })
 
     #TODO: make the answers save to somewhere meaningful, probably directly to the user's info
-    # for answer in choices:
-    #    .save()
+
+    for ch in choices:
+        new_answer = UserAnswers(choice=ch, userName=request.user)
+        new_answer.save()
 
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
