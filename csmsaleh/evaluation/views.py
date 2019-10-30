@@ -37,18 +37,21 @@ def submitAnswers(request, evaluation_id):
     choices = []
     #these lines work for a single response, but not all. Needs to iterate with the for loop
     for c in evaluation.question_set.all():
-        answer = request.POST['choice1']
-        choices.append(answer)
-            # try:
-            #     choices.append(self.request.get('choice{{c}}'))
-            # except:
-            #     return render(request, 'evaluation/detail.html', {
-            #             'evaluation': evaluation,
-            #             'error_message': "You did not answer one of the required questions.",
-            #         })
+        try:
+            answer = request.POST['choice1']
+            choices.append(answer)
+        except:
+            return render(request, 'evaluation/detail.html', {
+                        'evaluation': evaluation,
+                        'error_message': "You did not answer one of the required questions.",
+                    })
+
+    #TODO: make the answers save to somewhere meaningful, probably directly to the user's info
     # for answer in choices:
     #    .save()
+
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
+    # This line sends the user to the results.html page
     return HttpResponseRedirect(reverse('evaluation:results', args=(evaluation.id,)))

@@ -1,4 +1,6 @@
-<h1>{{ question.question_text }}</h1>
+<h1>{{ evaluation.eval_text }}</h1>
+
+<h2>Thanks for your response!</h2>
 
 <ul>
 {% for choice in question.choice_set.all %}
@@ -6,4 +8,4 @@
 {% endfor %}
 </ul>
 
-<a href="{% url 'evaluation:detail' question.id %}">Vote again?</a>
+<a href="{% url 'evaluation:index' %}">Return Home</a>
