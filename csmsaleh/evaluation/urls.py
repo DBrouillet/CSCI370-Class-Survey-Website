@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
     # ex: /evaluation/5/submit/
     path('<int:evaluation_id>/submit/', views.submitAnswers, name='submit'),
+    path('download-csv', views.download_csv, name='download'),
 ]

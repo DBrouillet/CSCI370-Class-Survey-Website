@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404, render
+import csv
+from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -65,3 +66,15 @@ def submitAnswers(request, evaluation_id):
     # user hits the Back button.
     # This line sends the user to the results.html page
     return HttpResponseRedirect(reverse('evaluation:results', args=(evaluation.id,)))
+
+
+# This is how to download csvs. Go to /evaluation/download-csv to get it. Tutorial at https://www.youtube.com/watch?v=cYsU1pUzu4o
+def download_csv(request):
+    items = UserAnswers.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="useranswers.csv"'
+    writer = csv.writer(response, delimiter=',')
+    writer.writerow(['choice', 'userName'])
+    for obj in items:
+        writer.writerow([obj.choice, obj.userName])
+    return response
