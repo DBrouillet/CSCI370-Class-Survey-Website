@@ -6,4 +6,3 @@ evaluation/migrations/__pycache__/
 #Django Stuff to ignore
 *.log
 local_settings.py
-db.sqlite3
