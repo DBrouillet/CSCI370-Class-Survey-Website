@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECRET_KEY = os.environ.get('SECRET_KEY')
 SECRET_KEY = '^01n77__vhqei)t^*h!+t(sp7+)3i-()39z+1jm-mw834390@1'
 
-# SECURITY WARN push ING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['csmevaluator.herokuapp.com', '127.0.0.1']
@@ -90,19 +90,21 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
+# First and fourth password validators removed so that users with the same username/password are allowed
+# And so that is can be purely numeric (Allows CWID as username/password)
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -126,5 +128,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
-LOGIN_REDIRECT_URL = 'base_site'
+LOGIN_REDIRECT_URL = '/evaluation/' # Redirecting users to the base of the evaluation tree
 LOGOUT_REDIRECT_URL = 'base_site' # add login and logon functionality, replace it with home page
