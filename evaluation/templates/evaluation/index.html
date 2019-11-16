@@ -1,12 +1,13 @@
 {% load static %}
 
 
+
 <link rel="stylesheet" type="text/css" href="{% static 'evaluation/style.css' %}">
 
 <!--This file displays all available evaluations from the recent list, as defined by latest_evaluation_list-->
 <h2 style="text-align:center; font-size: 40px;" >Available Evaluations</h2>
 {% if latest_evaluation_list %}
-    <ul style="text-align:center; ">
+    <ul style="text-align:center; list-style: none;">
     {% for evaluation in latest_evaluation_list %}
         <li><a href="{% url 'evaluation:detail' evaluation.id %}">{{ evaluation.eval_text }}</a></li>
     {% endfor %}

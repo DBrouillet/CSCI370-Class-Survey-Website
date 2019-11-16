@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from datetime import datetime, timedelta
 
 from .models import Evaluation, Choice, Question, UserAnswers
 
@@ -19,8 +20,9 @@ class IndexView(generic.ListView):
         published in the future).
         """
         return Evaluation.objects.filter(
-            pub_date__lte=timezone.now()
-        ).order_by('-pub_date')[:5]
+            pub_date__lte=timezone.now(), pub_date__gte=datetime.now()-timedelta(days=7)
+
+        ).order_by('-pub_date')
 
 
 class DetailView(generic.DetailView):
@@ -74,7 +76,8 @@ def download_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="useranswers.csv"'
     writer = csv.writer(response, delimiter=',')
-    writer.writerow(['choice', 'userName'])
+    writer.writerow(['choice', 'userName', 'Evaluation Name', 'Evaluation Publish Date'])
     for obj in items:
-        writer.writerow([obj.choice, obj.userName])
+        writer.writerow([obj.choice, obj.userName, obj.choice.question.evaluation.eval_text,
+                         obj.choice.question.evaluation.pub_date])
     return response

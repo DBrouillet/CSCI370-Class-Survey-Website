@@ -26,5 +26,5 @@ urlpatterns = [
 ]
 
 admin.site.site_header = "Evaluator Administration"
-admin.site.site_title = "Evaluator Admin"
-admin.site.index_title = "Welcome to Evaluation Administration"
+admin.site.site_title = "Evaluator Administation"
+admin.site.index_title = "Admin Home"
