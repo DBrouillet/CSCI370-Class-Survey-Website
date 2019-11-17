@@ -23,7 +23,7 @@ class Evaluation(models.Model):
 class Question(models.Model):
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
     question_text = models.CharField(max_length=200)
-    # is_required = models.BooleanField(default=True)
+    is_radio = models.BooleanField(default=True)
     def __str__(self):
         return self.question_text
 

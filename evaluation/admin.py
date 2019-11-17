@@ -24,14 +24,18 @@ class EvaluationAdmin(admin.ModelAdmin):
     list_display = ('eval_text', 'pub_date', 'was_published_recently')
     list_filter = ['pub_date']
     search_fields = ['eval_text']
+
 class QuestionAdmin(admin.ModelAdmin):
     list_select_related = [
         'evaluation',
     ]
     fieldsets = [
-        (None, {'fields': ['question_text']}),
+        (None, {'fields': ['question_text', 'is_radio']}),
     ]
-    inlines = [ChoiceInline]
+
+    # TODO: Make fields for choices only if the question is multiple choice
+    # if(is_radio):
+    #     inlines = [ChoiceInline]
 
 class GroupsAdmin(GroupAdmin):
     list_display = ["name"]
