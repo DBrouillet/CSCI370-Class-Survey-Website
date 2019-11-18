@@ -1,37 +1,42 @@
 import csv
 from django.shortcuts import get_object_or_404, render, HttpResponse
-from django.template import loader
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from datetime import datetime, timedelta
-
+from django.contrib.auth.models import Group
 from .models import Evaluation, Choice, Question, UserAnswers
 
 
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     template_name = 'evaluation/index.html'
     context_object_name = 'latest_evaluation_list'
-    # TODO: fix the following method to display for five days from publish date instead of the most recent five surveys
     def get_queryset(self):
         """
         Return the last five published questions (not including those set to be
         published in the future).
         """
         return Evaluation.objects.filter(
-            pub_date__lte=timezone.now(), pub_date__gte=datetime.now()-timedelta(days=7)
+            pub_date__lte=timezone.now(), pub_date__gte=datetime.now()-timedelta(days=7),
 
         ).order_by('-pub_date')
 
 
-class DetailView(generic.DetailView):
+class DetailView(LoginRequiredMixin, generic.DetailView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     model = Evaluation
     template_name = 'evaluation/detail.html'
 
 
 
-class ResultsView(generic.DetailView):
+class ResultsView(LoginRequiredMixin, generic.DetailView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     model = Evaluation
     template_name = 'evaluation/results.html'
 
@@ -57,8 +62,6 @@ def submitAnswers(request, evaluation_id):
                         'error_message': "You did not answer one of the required questions.",
                     })
 
-    #TODO: make the answers save to somewhere meaningful, probably directly to the user's info
-
     for ch in choices:
         new_answer = UserAnswers(choice=ch, userName=request.user)
         new_answer.save()
@@ -70,14 +73,19 @@ def submitAnswers(request, evaluation_id):
     return HttpResponseRedirect(reverse('evaluation:results', args=(evaluation.id,)))
 
 
-# This is how to download csvs. Go to /evaluation/download-csv to get it. Tutorial at https://www.youtube.com/watch?v=cYsU1pUzu4o
+# This is how to download csvs. Go to /evaluation/download-csv to get it.
+# Tutorial at https://www.youtube.com/watch?v=cYsU1pUzu4o
 def download_csv(request):
-    items = UserAnswers.objects.all()
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="useranswers.csv"'
     writer = csv.writer(response, delimiter=',')
-    writer.writerow(['choice', 'userName', 'Evaluation Name', 'Evaluation Publish Date'])
-    for obj in items:
-        writer.writerow([obj.choice, obj.userName, obj.choice.question.evaluation.eval_text,
-                         obj.choice.question.evaluation.pub_date])
+    writer.writerow(
+        ['Evaluation Name', 'User Name', 'User Group' 'Evaluation Publish Date', 'Date Submitted', 'Question',
+         'Answer'])
+    for g in Group.objects.all():
+        items = UserAnswers.userName.groups.filter(name=g)
+        for obj in items:
+            writer.writerow([obj.choice.question.evaluation.eval_text, obj.userName, obj.userName.group,
+                             obj.choice.question.evaluation.pub_date, obj.choice.question.evaluation_id,
+                             obj.choice.question.question_text, obj.choice])
     return response
