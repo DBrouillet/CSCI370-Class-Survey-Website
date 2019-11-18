@@ -71,21 +71,3 @@ def submitAnswers(request, evaluation_id):
     # user hits the Back button.
     # This line sends the user to the results.html page
     return HttpResponseRedirect(reverse('evaluation:results', args=(evaluation.id,)))
-
-
-# This is how to download csvs. Go to /evaluation/download-csv to get it.
-# Tutorial at https://www.youtube.com/watch?v=cYsU1pUzu4o
-def download_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="useranswers.csv"'
-    writer = csv.writer(response, delimiter=',')
-    writer.writerow(
-        ['Evaluation Name', 'User Name', 'User Group' 'Evaluation Publish Date', 'Date Submitted', 'Question',
-         'Answer'])
-    for g in Group.objects.all():
-        items = UserAnswers.userName.groups.filter(name=g)
-        for obj in items:
-            writer.writerow([obj.choice.question.evaluation.eval_text, obj.userName, obj.userName.group,
-                             obj.choice.question.evaluation.pub_date, obj.choice.question.evaluation_id,
-                             obj.choice.question.question_text, obj.choice])
-    return response
