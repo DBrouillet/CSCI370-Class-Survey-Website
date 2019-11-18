@@ -1,6 +1,7 @@
 from django.contrib import admin
 import csv
 from django.contrib.auth.models import Group
+from django.contrib.auth.models import User
 from django.contrib.auth.admin import GroupAdmin
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from .models import Evaluation, Question, Choice, UserAnswers
@@ -38,6 +39,7 @@ class GroupsAdmin(GroupAdmin):
     actions = ['download_csv']
     # This is how to download csvs. Go to /evaluation/download-csv to get it.
     # Tutorial at https://www.youtube.com/watch?v=cYsU1pUzu4o
+
     def download_csv(self, request, queryset):
         items = UserAnswers.objects.all()
         response = HttpResponse(content_type='text/csv')
@@ -45,8 +47,9 @@ class GroupsAdmin(GroupAdmin):
         writer = csv.writer(response, delimiter=',')
         writer.writerow(['Evaluation Name', 'User Name', 'Question', 'Answer', 'Evaluation Publish Date', 'Submit Date'])
         for obj in items:
-            writer.writerow([obj.choice.question.evaluation.eval_text, obj.userName, obj.choice.question, obj.choice,
-                             obj.choice.question.evaluation.pub_date, obj.submitTime])
+            for group in queryset:
+                if User.objects.filter(username=obj.userName, groups__name=group).exists():
+                    writer.writerow([obj.choice.question.evaluation.eval_text, obj.userName, obj.choice.question, obj.choice, obj.choice.question.evaluation.pub_date, obj.submitTime])
         return response
         # response = HttpResponse(content_type='text/csv')
         # response['Content-Disposition'] = 'attachment; filename="useranswers.csv"'
