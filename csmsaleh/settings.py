@@ -26,7 +26,7 @@ SECRET_KEY = '^01n77__vhqei)t^*h!+t(sp7+)3i-()39z+1jm-mw834390@1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['csmevaluator.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['collabfeedback.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
