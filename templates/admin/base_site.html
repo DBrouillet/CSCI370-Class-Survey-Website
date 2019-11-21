@@ -1,11 +1,11 @@
 {% extends "admin/base_site.html" %}
 
-{% block title %}{{ title }} | {{ site_title|default:_('Peer Evaluator Login') }}{% endblock %}
+{% block title %}{{ title }} | {{ site_title|default:_('Peer Feedback Login') }}{% endblock %}
 
 {% block content %}
 <header><img src="https://idp.mines.edu/idp/images/Mineslogo.png" alt="Colorado School of Mines"></header>
 {% if user.is_authenticated %}
-<h1 id="site-name"><a href="{% url 'evaluation:index' %}">Take Evaluations</a></h1>
+<h1 id="site-name"><a href="{% url 'evaluation:index' %}">Submit Feedback</a></h1>
 <p><a href="{% url 'logout' %}">Logout</a></p> <!-- logoff buttton assigned -->
 {% else %}
   <p>You are not logged in.</p>

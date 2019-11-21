@@ -25,6 +25,6 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='admin/base_site.html'), name='base_site'), # new url connection between login/out pages and the main page
 ]
 
-admin.site.site_header = "Evaluator Administration"
-admin.site.site_title = "Evaluator Administation"
+admin.site.site_header = "Feedback Administration"
+admin.site.site_title = "Feedback Administation"
 admin.site.index_title = "Admin Home"

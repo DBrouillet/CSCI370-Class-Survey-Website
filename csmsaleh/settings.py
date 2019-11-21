@@ -132,5 +132,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True #Logout users when they close the tab
 LOGIN_REDIRECT_URL = '/evaluation/' # Redirecting users to the base of the evaluation tree
 LOGOUT_REDIRECT_URL = 'base_site' # add login and logon functionality, replace it with home page
