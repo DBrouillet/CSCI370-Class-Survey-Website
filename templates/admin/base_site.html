@@ -1,9 +1,12 @@
 {% extends "admin/base_site.html" %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'evaluation/style.css' %}">
 
 {% block title %}{{ title }} | {{ site_title|default:_('Peer Feedback Login') }}{% endblock %}
 
 {% block content %}
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <header><img src="https://idp.mines.edu/idp/images/Mineslogo.png" alt="Colorado School of Mines"></header>
 {% if user.is_authenticated %}
 <h1 id="site-name"><a href="{% url 'evaluation:index' %}">Submit Feedback</a></h1>
