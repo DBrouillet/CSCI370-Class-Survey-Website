@@ -3,11 +3,12 @@
 
 
 <link rel="stylesheet" type="text/css" href="{% static 'evaluation/style.css' %}">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <title>{% block title %}Collaborative Feedback{% endblock %}</title>
 
 <!--This file displays all available evaluations from the recent list, as defined by latest_evaluation_list-->
 <h2 style="text-align:center; font-size: 40px;" >Available Feedback Forms</h2>
+<body>
 {% if latest_evaluation_list %}
     <ul style="text-align:center; font-size: 28px; list-style: none;">
     {% for evaluation in latest_evaluation_list %}
@@ -17,3 +18,4 @@
 {% else %}
     <p style="text-align:center; ">No evaluations are available.</p>
 {% endif %}
+</body>
