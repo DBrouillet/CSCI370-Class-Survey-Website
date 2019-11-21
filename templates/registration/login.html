@@ -2,14 +2,14 @@
 {% extends 'base.html' %}
 
 {% load static %}
-<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-<!-- Image setting in header -->
-<header><img src="https://idp.mines.edu/idp/images/Mineslogo.png" alt="Colorado School of Mines"></header>
-<h2>Login</h2>
+
+<link rel="stylesheet" type="text/css" href="{% static 'evaluation/style.css' %}">
 <body>
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<header><img src="https://idp.mines.edu/idp/images/Mineslogo.png" alt="Colorado School of Mines"></header>
+<h2>Login</h2>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
