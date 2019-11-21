@@ -1,6 +1,9 @@
 li a {
     color: green;
 }
+p {
+    font: arial, sans-serif;
+}
 body {
     background: white url("images/background.gif") no-repeat;
 }

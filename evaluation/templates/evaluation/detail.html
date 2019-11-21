@@ -2,7 +2,7 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-
+<title>{% block title %}Give Feedback{% endblock %}</title>
 <form action="{% url 'evaluation:submit' evaluation.id %}" method="post">
 {% csrf_token %}
     {% for question in evaluation.question_set.all %}
