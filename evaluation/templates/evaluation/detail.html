@@ -3,6 +3,7 @@
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <title>{% block title %}Give Feedback{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <form action="{% url 'evaluation:submit' evaluation.id %}" method="post">
 {% csrf_token %}
     {% for question in evaluation.question_set.all %}
