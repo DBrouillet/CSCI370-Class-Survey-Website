@@ -13,6 +13,7 @@
     <ul style="text-align:center; font-size: 28px; list-style: none;">
     {% for evaluation in latest_evaluation_list %}
         <li><a href="{% url 'evaluation:detail' evaluation.id %}">{{ evaluation.eval_text }}</a></li>
+        <li></li>
     {% endfor %}
     </ul>
 {% else %}

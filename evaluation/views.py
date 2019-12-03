@@ -7,7 +7,7 @@ from django.views import generic
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.contrib.auth.models import Group
-from .models import Evaluation, Choice, Question, UserAnswers
+from .models import Evaluation, Choice, Question, UserAnswers, FreeResponseAnswer, FreeResponseQuestion
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -54,16 +54,29 @@ def submitAnswers(request, evaluation_id):
             data = request.POST.copy()
             answer = data.get(quest_num)
             final_choice = Choice.objects.get(id = answer) #taking the cleaned POST data and retrieving the corresponding choice to save
-            choices.append(final_choice)
-
+            choiceType = "C"
+            choices.append([final_choice, choiceType])
         except:
             return render(request, 'evaluation/detail.html', {
                         'evaluation': evaluation,
                         'error_message': "You did not answer one of the required questions.",
                     })
 
+    i = 0
+    for c in evaluation.freeresponsequestion_set.all():
+        i = i + 1
+        name = "textarea" + str(i)
+        data = request.POST.copy()
+        answer = data.get(name)
+        if answer != '':
+            
+            choices.append([])
+
     for ch in choices:
-        new_answer = UserAnswers(choice=ch, userName=request.user)
+        if ch[1] == "C":
+            new_answer = UserAnswers(choice=ch[0], userName=request.user)
+        else:
+            new_answer = UserAnswers(freeResponseAnswer=ch[0], FreeResponseQuestion=ch, userName=request.user)
         new_answer.save()
 
     # Always return an HttpResponseRedirect after successfully dealing

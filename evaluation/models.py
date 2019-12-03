@@ -18,7 +18,12 @@ class Evaluation(models.Model):
     was_published_recently.boolean = True
     was_published_recently.short_description = 'Visible to Users'
 
-
+class FreeResponseQuestion(models.Model):
+    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=200)
+    # is_required = models.BooleanField(default=True)
+    def __str__(self):
+        return self.question_text
 
 class Question(models.Model):
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
@@ -27,14 +32,18 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
-
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
     def __str__(self):
         return self.choice_text
 
+class FreeResponseAnswer(models.Model):
+    answerText = models.CharField(max_length=1000, default=None, blank=True, null=True)
+
 class UserAnswers(models.Model):
-    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    freeResponseQuestion = models.ForeignKey(FreeResponseQuestion, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    freeResponseAnswer = models.ForeignKey(FreeResponseAnswer, on_delete=models.CASCADE, default=None, blank=True, null=True)
     submitTime = models.DateField(auto_now=True)
     userName = models.CharField(max_length=30)
