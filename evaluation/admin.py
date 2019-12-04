@@ -6,18 +6,26 @@ from django.contrib.auth.admin import GroupAdmin
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from .models import Evaluation, Question, Choice, UserAnswers, FreeResponseQuestion, FreeResponseAnswer
 
-
-
 class ChoiceInline(admin.TabularInline):
     model = Choice
     extra = 2
 
 class QuestionInline(admin.TabularInline):
-    model = Question
-    extra = 1
+    model = Evaluation.questions.through
+    verbose_name = "Question"
+    verbose_name_plural = "Questions"
+    extra = 0
 
 class FreeResponseInline(admin.TabularInline):
-    model = FreeResponseQuestion
+    model = Evaluation.freeResponseQuestions.through
+    verbose_name = "Free Response Question"
+    verbose_name_plural = "Free Response Questions"
+    extra = 0
+
+class GroupsInline(admin.TabularInline):
+    model = Evaluation.groups.through
+    verbose_name = "Group"
+    verbose_name_plural = "Assigned Groups"
     extra = 0
 
 class EvaluationAdmin(admin.ModelAdmin):
@@ -25,7 +33,7 @@ class EvaluationAdmin(admin.ModelAdmin):
         (None, {'fields': ['eval_text']}),
         ('Date information', {'fields': ['pub_date']}),
     ]
-    inlines = [QuestionInline, FreeResponseInline]
+    inlines = [GroupsInline, QuestionInline, FreeResponseInline]
     list_display = ('eval_text', 'pub_date', 'was_published_recently')
     list_filter = ['pub_date']
     search_fields = ['eval_text']
@@ -47,14 +55,14 @@ class GroupsAdmin(GroupAdmin):
     list_display = ["name"]
     actions = ['download_csv']
 
-    # Tutorial at https://www.youtube.com/watch?v=cYsU1pUzu4o
-
+    # This is the function we use to download csvs
+    # Tutorial we used to create it was found at https://www.youtube.com/watch?v=cYsU1pUzu4o (sometime in October 2019)
     def download_csv(self, request, queryset):
         items = UserAnswers.objects.all()
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="Recorded Responses.csv"'
         writer = csv.writer(response, delimiter=',')
-        writer.writerow(['Evaluation Name', 'User Name', 'Question', 'Answer', 'Evaluation Publish Date', 'Submit Date'])
+        writer.writerow(['Evaluation Name', 'User Name', 'First Name', 'Last Name', 'Question', 'Answer', 'Evaluation Publish Date', 'Submit Date'])
         for obj in items:
             for group in queryset:
                 if User.objects.filter(username=obj.userName, groups__name=group).exists():
@@ -68,5 +76,5 @@ admin.site.unregister(Group)
 admin.site.register(Group, GroupsAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Evaluation, EvaluationAdmin)
-
+admin.site.register(FreeResponseQuestion)
 

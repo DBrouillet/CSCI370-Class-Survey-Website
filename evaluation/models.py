@@ -5,10 +5,27 @@ from django.utils import timezone
 from django.contrib.auth.models import Group
 
 
+
+class FreeResponseQuestion(models.Model):
+    # evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=200)
+    # is_required = models.BooleanField(default=True)
+    def __str__(self):
+        return self.question_text
+
+class Question(models.Model):
+    # evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=200)
+    # is_required = models.BooleanField(default=True)
+    def __str__(self):
+        return self.question_text
+
 class Evaluation(models.Model):
     eval_text = models.CharField('Evaluation Title', max_length=200) #Evaluation name as seen by the user
     pub_date = models.DateTimeField('publish date')
-    # eval_group = models.ForeignKey(Group)
+    groups = models.ManyToManyField(Group)
+    freeResponseQuestions = models.ManyToManyField(FreeResponseQuestion)
+    questions = models.ManyToManyField(Question)
     def __str__(self):
         return self.eval_text
     def was_published_recently(self):
@@ -17,20 +34,6 @@ class Evaluation(models.Model):
     was_published_recently.admin_order_field = 'pub_date'
     was_published_recently.boolean = True
     was_published_recently.short_description = 'Visible to Users'
-
-class FreeResponseQuestion(models.Model):
-    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
-    question_text = models.CharField(max_length=200)
-    # is_required = models.BooleanField(default=True)
-    def __str__(self):
-        return self.question_text
-
-class Question(models.Model):
-    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
-    question_text = models.CharField(max_length=200)
-    # is_required = models.BooleanField(default=True)
-    def __str__(self):
-        return self.question_text
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

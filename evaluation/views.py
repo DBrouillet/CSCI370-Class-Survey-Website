@@ -46,7 +46,7 @@ def submitAnswers(request, evaluation_id):
     i = 0
     #iterates through all questions to see if they were answered
     # currently, data returned by the POST is numerical, not very useful
-    for c in evaluation.question_set.all():
+    for c in evaluation.questions.all():
         try:
             # using i and questNum as temp variables to iterate through user selections
             i = i + 1
@@ -63,20 +63,22 @@ def submitAnswers(request, evaluation_id):
                     })
 
     i = 0
-    for c in evaluation.freeresponsequestion_set.all():
+    for c in evaluation.freeResponseQuestions.all():
         i = i + 1
         name = "textarea" + str(i)
         data = request.POST.copy()
         answer = data.get(name)
+        question = FreeResponseQuestion.objects.get(id = c.id)
         if answer != '':
-            
-            choices.append([])
+            choices.append([answer , question])
 
     for ch in choices:
         if ch[1] == "C":
             new_answer = UserAnswers(choice=ch[0], userName=request.user)
         else:
-            new_answer = UserAnswers(freeResponseAnswer=ch[0], FreeResponseQuestion=ch, userName=request.user)
+            frAnswer = FreeResponseAnswer(answerText=ch[0])
+            frAnswer.save()
+            new_answer = UserAnswers(freeResponseAnswer=frAnswer, freeResponseQuestion=ch[1], userName=request.user)
         new_answer.save()
 
     # Always return an HttpResponseRedirect after successfully dealing

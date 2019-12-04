@@ -1,4 +1,5 @@
 {% load static %}
+{% load group_tags %}
 
 
 
@@ -12,8 +13,10 @@
 {% if latest_evaluation_list %}
     <ul style="text-align:center; font-size: 28px; list-style: none;">
     {% for evaluation in latest_evaluation_list %}
+        {% if request.user|can_see:evaluation %}
         <li><a href="{% url 'evaluation:detail' evaluation.id %}">{{ evaluation.eval_text }}</a></li>
         <li></li>
+        {% endif %}
     {% endfor %}
     </ul>
 {% else %}

@@ -7,7 +7,7 @@
 <body>
 <form action="{% url 'evaluation:submit' evaluation.id %}" method="post">
 {% csrf_token %}
-    {% for question in evaluation.question_set.all %}
+    {% for question in evaluation.questions.all %}
 <!--        This looks like an error in the pycharm IDE, but functions correctly when compiled-->
         <label for="question{{ forloop.counter }}">{{ question.question_text }}</label><br>
         <!--Second for loop to create each choice for every question. forloop.parentloop.counter accesses the outer loop's counter-->
@@ -17,9 +17,9 @@
             {% endfor %}
             <p></p>
     {% endfor %}
-    {% for frquestion in evaluation.freeresponsequestion_set.all %}
-    <label for="frquestion{{ forloop.counter }}">{{ frquestion.question_text }}</label><br>
-    <textarea rows="5" cols="80" id="textanswer{{ forloop.counter }}" name=textarea{{ forloop.counter }} value=""></textarea>
+    {% for frquestion in evaluation.freeResponseQuestions.all %}
+        <label for="frquestion{{ forloop.counter }}">{{ frquestion.question_text }}</label><br>
+        <textarea rows="5" cols="80" id="textanswer{{ forloop.counter }}" name=textarea{{ forloop.counter }} value=""></textarea>
     <p></p>
     {% endfor %}
 <input type="submit" value="Submit">
