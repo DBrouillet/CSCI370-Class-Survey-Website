@@ -13,6 +13,7 @@ The csmsaleh directory contains all .py setup files. settings.py contains all re
         -migrations: This folder contains all historical changes to the database structure for Django to read from
         -static: The static folder contains all CSS stylesheets and background images for the evaluation site
         -templates: The templates for each page view within the evaluation site are stored here, in HTML format.
+        -templatetags: The templatetags folder contains .py files adding custom templates for filtering evaluations by the logged-in user
         The evaluation folder contains all .py files used to generate site content that pertains to the database models
         Admin.py customizes options and views for the administration site. 
         Apps.py contains a necessary config line for the evalution app. This file would contain more if adding sub-sites to the website

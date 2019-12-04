@@ -4,70 +4,81 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import GroupAdmin
 from django.shortcuts import get_object_or_404, render, HttpResponse
-from .models import Evaluation, Question, Choice, UserAnswers
+from .models import Evaluation, Question, Choice, UserAnswers, FreeResponseQuestion, FreeResponseAnswer
 
-
-
+#Creating inlines for choices, Questions, FreeResponseQuestions, and Groups
 class ChoiceInline(admin.TabularInline):
     model = Choice
     extra = 2
 
 class QuestionInline(admin.TabularInline):
-    model = Question
-    extra = 1
+    model = Evaluation.questions.through
+    verbose_name = "Question"
+    verbose_name_plural = "Questions"
+    extra = 0
 
+class FreeResponseInline(admin.TabularInline):
+    model = Evaluation.freeResponseQuestions.through
+    verbose_name = "Free Response Question"
+    verbose_name_plural = "Free Response Questions"
+    extra = 0
+
+class GroupsInline(admin.TabularInline):
+    model = Evaluation.groups.through
+    verbose_name = "Group"
+    verbose_name_plural = "Assigned Groups"
+    extra = 0
+
+#Creating custom admin fields for administrators to edit various fields when creating evaluations
 class EvaluationAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['eval_text']}),
         ('Date information', {'fields': ['pub_date']}),
     ]
-    inlines = [QuestionInline]
+    inlines = [GroupsInline, QuestionInline, FreeResponseInline]
     list_display = ('eval_text', 'pub_date', 'was_published_recently')
     list_filter = ['pub_date']
     search_fields = ['eval_text']
-class QuestionAdmin(admin.ModelAdmin):
-    list_select_related = [
-        'evaluation',
-    ]
+
+class FreeResponseQuestionAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['question_text']}),
+        (None,
+         {'fields': ['question_text']}),
+    ]
+
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,
+         {'fields': ['question_text']}),
     ]
     inlines = [ChoiceInline]
 
 class GroupsAdmin(GroupAdmin):
     list_display = ["name"]
     actions = ['download_csv']
-    # This is how to download csvs. Go to /evaluation/download-csv to get it.
-    # Tutorial at https://www.youtube.com/watch?v=cYsU1pUzu4o
 
+    # This is the function we use to download csvs
+    # Tutorial we used to create it was found at https://www.youtube.com/watch?v=cYsU1pUzu4o (sometime in October 2019)
     def download_csv(self, request, queryset):
         items = UserAnswers.objects.all()
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="Recorded Responses.csv"'
         writer = csv.writer(response, delimiter=',')
-        writer.writerow(['Evaluation Name', 'User Name', 'Question', 'Answer', 'Evaluation Publish Date', 'Submit Date'])
+        #Writing the top line with column names
+        writer.writerow(['Evaluation Name', 'User Name', 'First Name', 'Last Name', 'Question', 'Answer', 'Evaluation Publish Date', 'Submit Date'])
         for obj in items:
             for group in queryset:
+                #filtering responses to only output for the selected groups
                 if User.objects.filter(username=obj.userName, groups__name=group).exists():
-                    writer.writerow([obj.choice.question.evaluation.eval_text, obj.userName, obj.choice.question, obj.choice, obj.choice.question.evaluation.pub_date, obj.submitTime])
+                    if obj.choice is not None:
+                        writer.writerow([obj.evaluation.eval_text, obj.userName, obj.firstName, obj.lastName, obj.choice.question, obj.choice, obj.evaluation.pub_date, obj.submitTime])
+                    elif obj.freeResponseQuestion is not None and obj.freeResponseAnswer is not None:
+                        writer.writerow([obj.evaluation.eval_text, obj.userName, obj.firstName, obj.lastName, obj.freeResponseQuestion.question_text, obj.freeResponseAnswer.answerText, obj.evaluation.pub_date, obj.submitTime])
         return response
-        # response = HttpResponse(content_type='text/csv')
-        # response['Content-Disposition'] = 'attachment; filename="useranswers.csv"'
-        # writer = csv.writer(response, delimiter=',')
-        # writer.writerow(
-        #     ['Evaluation Name', 'User Name', 'User Group' 'Evaluation Publish Date', 'Date Submitted', 'Question',
-        #      'Answer'])
-        # for g in Group.objects.all():
-        #     items = UserAnswers.userName.groups.filter(name=g)
-        #     for obj in items:
-        #         writer.writerow([obj.choice.question.evaluation.eval_text, obj.userName, obj.userName.group,
-        #                          obj.choice.question.evaluation.pub_date, obj.choice.question.evaluation_id,
-        #                          obj.choice.question.question_text, obj.choice])
-        # return response
 
+#Unregistering the default Group behavior, then registering all custom administration views
 admin.site.unregister(Group)
 admin.site.register(Group, GroupsAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Evaluation, EvaluationAdmin)
-
-
+admin.site.register(FreeResponseQuestion)

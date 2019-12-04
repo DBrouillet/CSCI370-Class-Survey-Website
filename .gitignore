@@ -1,6 +1,7 @@
 evaluation/__pycache__/
 csmsaleh/__pycache__/
 evaluation/migrations/__pycache__/
+evaluation/templatetags/__pycache__/
 .idea/
 
 #Django Stuff to ignore
